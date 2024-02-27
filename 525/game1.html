@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+	<TITLE>BLUE-B</TITLE>
+
+<STYLE TYPE="text/css">
+#board TD {width: 40pt; height: 40pt; font-size: 2pt; }
+#board TD.start {font-size: 20pt; font-weight:700; border-left: 2px black solid; background:green; border-top: 2px black solid;text-align: center; color: red}
+#board TD.end {font-size: 20pt; font-weight:700; text-align: center; color: green}
+#message {margin: 0pt; padding: 0pt; text-align: center; font-size: 30pt}
+</STYLE>
+
+  
+<SCRIPT LANGUAGE="JavaScript">
+    var maze = new Array()
+    var sides = new Array("Border-Top", "Border-Right")
+    for (var rows=0; rows<13; rows++)
+      maze[rows] = new Array()
+    maze[0][0] = new Array(1,1,1,1,1,1,1,1,1,1,1,1)
+    maze[0][1] = new Array(1,0,0,0,0,1,0,1,1,1,0,1)                        
+    maze[1][0] = new Array(0,1,1,1,0,0,1,0,0,1,0,1)
+    maze[1][1] = new Array(0,0,0,0,1,0,1,0,1,0,1,1)
+    maze[2][0] = new Array(0,1,1,1,0,0,0,1,0,0,1,0)
+    maze[2][1] = new Array(1,0,0,1,1,1,0,0,0,0,0,1)
+    maze[3][0] = new Array(0,0,1,0,1,1,0,1,0,1,1,1)
+    maze[3][1] = new Array(1,0,1,1,1,0,1,0,1,0,0,1)
+    maze[4][0] = new Array(0,1,0,0,0,0,1,1,0,0,1,0)
+    maze[4][1] = new Array(0,0,1,1,0,1,0,0,1,0,1,1)
+    maze[5][0] = new Array(1,1,0,0,1,1,0,1,0,1,0,0)
+    maze[5][1] = new Array(0,1,1,0,0,1,0,1,0,0,1,1)
+    maze[6][0] = new Array(0,1,0,0,1,1,0,1,1,1,1,0)
+    maze[6][1] = new Array(1,1,1,1,1,0,1,0,1,0,0,1)
+    maze[7][0] = new Array(0,0,1,0,0,1,1,1,0,0,1,1)
+    maze[7][1] = new Array(1,0,0,0,0,1,0,0,1,1,0,1)
+    maze[8][0] = new Array(0,1,0,1,1,1,0,1,0,1,1,0)
+    maze[8][1] = new Array(0,1,0,1,0,0,0,1,1,0,1,1)
+    maze[9][0] = new Array(1,0,0,1,1,1,0,0,1,0,1,0)
+    maze[9][1] = new Array(0,1,1,1,0,0,1,0,1,0,0,1)
+    maze[10][0] = new Array(1,0,0,0,0,0,1,0,1,0,1,0)
+    maze[10][1] = new Array(1,0,1,0,1,1,0,1,0,0,1,1)
+    maze[11][0] = new Array(0,1,0,1,0,1,0,1,1,1,0,0)
+    maze[11][1] = new Array(0,0,0,0,1,0,0,0,1,0,1,1)
+    maze[12][0] = new Array(1,1,0,1,1,1,1,0,1,0,1,0)
+    maze[12][1] = new Array(0,0,0,1,0,0,1,0,0,0,1,1)
+
+    function testNext(nxt) {
+      if ((board.rows[start.rows].cells[start.cols].style.backgroundColor=="green") && (nxt.style.backgroundColor=='green')) {
+        message.innerText="이쪽이 아닌가?"
+        board.rows[start.rows].cells[start.cols].style.backgroundColor=""
+        return false
+      }
+      return true
+    }    
+
+    function moveIt() {
+      if (!progress) return
+      switch (event.keyCode) {
+        case 37: // left
+          if (maze[start.rows][1][start.cols-1]==0) {
+            if (testNext(board.rows[start.rows].cells[start.cols-1]))
+              message.innerText="서쪽으로!"
+            start.cols--
+            document.all.board.rows[start.rows].cells[start.cols].style.backgroundColor="green"
+          } else
+          message.innerText="막혔어!"
+
+          break;
+        case 38: // up
+          if (maze[start.rows][0][start.cols]==0) {
+            if (testNext(board.rows[start.rows-1].cells[start.cols]))
+              message.innerText="북쪽으로!"
+            start.rows--
+            document.all.board.rows[start.rows].cells[start.cols].style.backgroundColor="green"
+          } else
+          message.innerText="막혔어!"
+
+          break;
+        case 39: // right
+          
+          if (maze[start.rows][1][start.cols]==0) {
+            if (testNext(board.rows[start.rows].cells[start.cols+1]))
+              message.innerText="동쪽으로!"
+            start.cols++
+            document.all.board.rows[start.rows].cells[start.cols].style.backgroundColor="green"
+          }
+          else
+          message.innerText="막혔어!"
+
+          break;
+        case 40: //down
+          if (maze[start.rows+1]==null) return
+          if (maze[start.rows+1][0][start.cols]==0) {
+            if (testNext(board.rows[start.rows+1].cells[start.cols]))
+              message.innerText="남쪽으로!"
+            start.rows++
+            document.all.board.rows[start.rows].cells[start.cols].style.backgroundColor="green"
+          } else
+          message.innerText="막혔어!"
+
+          break;
+      }
+      if (document.all.board.rows[start.rows].cells[start.cols].innerText=="end") {
+        message.innerText="레몬 셔벗" 
+        progress=false
+      }
+    }
+
+
+</SCRIPT>
+
+</HEAD>
+<BODY>
+<body bgcolor="pink">
+ <br><br><br>
+  <P><TABLE ID=board ALIGN=CENTER CELLSPACING=0 CELLPADDING=0> 
+  <SCRIPT LANGUAGE="JavaScript"> 
+    for (var row = 0; row<maze.length; row++) { 
+      document.write("<TR>")  
+ 
+      for (var col = 0; col<maze[row][0].length; col++) { 
+        document.write("<TD STYLE='") 
+        for (var cell = 0; cell<2; cell++) { 
+          if (maze[row][cell][col]==1)  
+            document.write(sides[cell]+": 2px black solid;") 
+        } 
+        if ((0==col) && (0!=row)) 
+          document.write("border-left: 2px black solid;") 
+        if (row==maze.length-1) 
+          document.write("border-bottom: 2px black solid;") 
+        if ((0==row) && (0==col))  
+          document.write(" background-color:green;' class=start>start</TD>") 
+        else 
+         if ((row==maze.length-1) && (col==maze[row][0].length-1)) 
+           document.write("' class=end>end</TD>") 
+         else 
+          document.write("'> </TD>") 
+      } 
+      document.write("</TR>") 
+    } 
+    var start = new Object 
+    start.rows = 0 
+    start.cols = 0 
+    progress=true 
+    document.onkeydown = moveIt; 
+  </SCRIPT> 
+  </TABLE> 
+
+<P ID="message"> </P> 
+   
+<DIV ID=pageList> 
+<P CLASS=start>  
+</DIV> 
+
+
+
+<center>
+     <h1>end에 도착하면 나오는 말은?</h1>
+    <h2>틀리면 리셋됩니다</h2>
+    <form name="p" action="javascript:myFunction()" method="post" >
+      <input type="text" id="textInput" >
+      <input type="submit" value="확인">
+      <input type="reset" value="리셋">
+    </form>
+  </center>
+
+  <script>
+  function myFunction() {
+   
+   
+    if (document.p.textInput.value =='레몬 셔벗')
+      location.href="secret2.html";
+
+    else
+      location.href="game1.html";
+    
+
+  }
+  </script>
+
+  
+
+<a href='index.html' ><button style=" font-size:2em; border-radius:0.5em; padding:5px 20px;">홈으로 돌아가기</button></a> 
+</BODY> 
+</html>
